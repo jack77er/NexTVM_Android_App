@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">TVM</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_login">Login</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="error_broken_event">Error wile receiving events</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_no_internet">Could not connect to server. Please check your internet connection.</string>
+
+    <string name="title_activity_nextvmt">Training registration</string>
+
+    <string name="event_users_desc">Registered users</string>
+    <string name="tvm_yes">Yes</string>
+    <string name="tvm_no">No</string>
+    <string name="tvm_maybe">Maybe</string>
+    <string name="tvm_expand_list">Expand users</string>
+    <string name="tvm_collapse_list">Collapse users</string>
+    <string name="error_event_not_found">Event not found!</string>
+    <string name="error_event_invalid_input">Invalid input!</string>
+    <string name="info_get_results_msg">Update values online...</string>
+    <string name="info_set_comment">Write your comment</string>
+    <string name="tvm_statistics">Yes: %1$d(%2$d) - No: %3$d - Maybe: %4$d</string>
+    <string name="ui_store_credentials">Remember me?</string>
+    <string name="error_ssl_failed">Error while creating a secure connection.</string>
+    <string name="ui_autologin">Log me in automatically</string>
+    <string name="ui_store_credentials_desc">Should I store your login and password?</string>
+    <string name="ui_autologin_desc">Do you want to be automatically loged in on application start?</string>
+    <string name="pref_login">Login settings</string>
+    <string name="pref_label">Settings</string>
+    <string name="pref_remember_value_desc">How many minutes? Current settings: %1$s min</string>
+    <string name="pref_remember">Remember</string>
+    <string name="pref_remember_value">Remember me!</string>
+    <string name="pref_remember_check_desc">Do you want to be remembered when an event occurs?</string>
+    <string name="pref_remember_check">Do you want an alert?</string>
+    <string name="notification_event_title">An event is upcoming!</string>
+    <string name="notification_event_details">%1$s starts at %2$s.</string>
+    <string name="menu_logout">Logut</string>
+    <string name="action_show_version">About</string>
+    <string name="pref_networkTimeout">Netz-Timeout</string>
+    <string name="pref_networkTimeout_desc">How long should I try co establish a sever connection?</string>
+    <string name="error_broken_category">Error wile receiving categories</string>
+    <string name="app_team_name">Rostocker Seebären</string>
+    <string name="app_team_title">A dragonboat racing team from Rostock</string>
+    <string name="nav_title_doodle">Doodle</string>
+    <string name="nav_title_board">Board</string>
+    <string name="nav_title_communicate">Communicate</string>
+    <string name="nav_title_categories">Categories</string>
+    <string name="get_latest_posts">Latest Posts</string>
+    <string name="error_broken_lastposts">Error receiving last board posts</string>
+    <string name="error_response_empty">Error: Empty response.</string>
+</resources>

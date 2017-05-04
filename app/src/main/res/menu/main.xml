@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_refresh"
+        app:showAsAction="always"
+        android:title="Refresh"
+        android:icon="@drawable/ic_refresh_white_24dp" />
+
+    <item
+        android:id="@+id/action_settings"
+        app:showAsAction="ifRoom"
+        android:title="@string/pref_label"
+        android:icon="@drawable/ic_settings_white_24dp"  />
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_logout"
+        android:icon="@drawable/ic_sentiment_very_dissatisfied_white_24dp"  />
+    <item
+        android:id="@+id/action_showVersion"
+        app:showAsAction="ifRoom"
+        android:title="@string/action_show_version" />
+</menu>

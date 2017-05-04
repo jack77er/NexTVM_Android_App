@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_login"
+        android:key="pref_key_login_settings">
+        <CheckBoxPreference
+            android:key="shouldStore"
+            android:title="@string/ui_store_credentials"
+            android:summary="@string/ui_store_credentials_desc"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="autoLogin"
+            android:title="@string/ui_autologin"
+            android:summary="@string/ui_autologin_desc"
+            android:defaultValue="false" />
+        <EditTextPreference
+            android:key="networkTimeout"
+            android:title="@string/pref_networkTimeout"
+            android:summary="@string/pref_networkTimeout_desc"
+            android:defaultValue="4000"
+            android:inputType="time"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_remember"
+        android:key="pref_key_remember_settings">
+        <CheckBoxPreference
+            android:key="rememberMe"
+            android:title="@string/pref_remember_check"
+            android:summary="@string/pref_remember_check_desc"
+            android:defaultValue="false" />
+        <EditTextPreference
+            android:key="rememberTime"
+            android:title="@string/pref_remember_value"
+            android:summary="@string/pref_remember_value_desc"
+            android:defaultValue="60"
+            android:inputType="time" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

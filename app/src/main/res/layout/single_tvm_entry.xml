@@ -1,0 +1,153 @@
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/border_green" >
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="1"
+                android:id="@+id/txtWhatAndWho"
+                android:textColor="@color/tvm_text"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/btnAddToCal"
+                android:text=""
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                android:drawableLeft="@drawable/ic_event_black_24dp"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="2dium Text"
+            android:id="@+id/txtWhere"
+            android:textColor="@color/tvm_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/txtWhen"
+            android:textColor="@color/tvm_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Large Text"
+            android:id="@+id/txtComment"
+            android:visibility="gone" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:id="@+id/rgChoice"
+            android:gravity="center_horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tvm_yes"
+                android:id="@+id/radioButtonYes"
+                android:textColor="@color/tvm_text"
+                android:buttonTint="@color/tvm_text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tvm_no"
+                android:id="@+id/radioButtonNo"
+                android:textColor="@color/tvm_text"
+                android:buttonTint="@color/tvm_text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tvm_maybe"
+                android:id="@+id/radioButtonMaybe"
+                android:textColor="@color/tvm_text"
+                android:buttonTint="@color/tvm_text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="5.0">
+
+            <ToggleButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textOff="@string/tvm_expand_list"
+                android:textOn="@string/tvm_collapse_list"
+                android:id="@+id/btnExpandUsers"
+                android:background="@color/tvm_text"
+                android:textColor="@android:color/primary_text_dark"
+                android:checked="false"
+                android:layout_margin="5dp"
+                android:layout_weight="1.0"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSetComment"
+                android:text = "+"
+                android:drawableLeft="@android:drawable/sym_action_chat"
+                android:background="@color/tvm_text"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                android:textColor="@android:color/primary_text_dark"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_weight="4.0"
+                android:enabled="false"
+                android:alpha="0.5" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/txtStatistics"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:paddingBottom="3dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/linlayEventUsers">
+
+        </LinearLayout>
+
+    </LinearLayout>
+</merge>

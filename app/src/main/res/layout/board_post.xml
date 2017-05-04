@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <TextView
+        android:text="Topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtBoardTopic"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="User"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtBoardUser"
+            android:layout_width="wrap_content"
+            tools:textStyle="bold" />
+
+        <TextView
+            android:text="Nachricht"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtBoardMsg"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:layout_margin="3dp"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimaryDark"
+        tools:background="@drawable/board_post_seperator" />
+
+</LinearLayout>
