@@ -973,7 +973,7 @@ public class NextvmActivity extends AppCompatActivity
                 client.setUseCaches (false);
                 client.setDoInput(true);
                 client.setDoOutput(true);
-                client.setChunkedStreamingMode(0);
+                //client.setChunkedStreamingMode(0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1206,7 +1206,7 @@ public class NextvmActivity extends AppCompatActivity
             client.setUseCaches (false);
             client.setDoInput(true);
             client.setDoOutput(true);
-            client.setChunkedStreamingMode(0);
+            //client.setChunkedStreamingMode(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1302,7 +1302,7 @@ public class NextvmActivity extends AppCompatActivity
             client.setUseCaches (false);
             client.setDoInput(true);
             client.setDoOutput(true);
-            client.setChunkedStreamingMode(0);
+            //client.setChunkedStreamingMode(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1402,7 +1402,7 @@ public class NextvmActivity extends AppCompatActivity
             client.setUseCaches (false);
             client.setDoInput(true);
             client.setDoOutput(true);
-            client.setChunkedStreamingMode(0);
+            ////client.setChunkedStreamingMode(0);
         } catch (Exception e) {
             e.printStackTrace();
         }

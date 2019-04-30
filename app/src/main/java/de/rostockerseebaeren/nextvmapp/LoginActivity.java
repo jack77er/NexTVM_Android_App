@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Connection timeout for request in milliseconds
      */
-    private static int CONNECTION_TIMEOUT = 4000;
+    private static int CONNECTION_TIMEOUT = 8000;
         /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -321,7 +321,8 @@ public class LoginActivity extends AppCompatActivity {
                 client.setUseCaches (false);
                 client.setDoInput(true);
                 client.setDoOutput(true);
-                client.setChunkedStreamingMode(0);
+
+                //client.setChunkedStreamingMode(0);
             } catch (Exception e) {
                 e.printStackTrace();
                 mError = getString(R.string.error_no_internet);
@@ -335,9 +336,11 @@ public class LoginActivity extends AppCompatActivity {
                 wr.close();
 
                 int responseCode = client.getResponseCode();
+                String responseMessage = client.getResponseMessage();
                 System.out.println("\nSending 'POST' request to URL : " + url);
                 System.out.println("Post parameters : " + paramStr);
                 System.out.println("Response Code : " + responseCode);
+                System.out.println("Response Message : " + responseMessage);
 
             } catch (Exception e){
                 mError = getString(R.string.error_no_internet);
@@ -345,11 +348,13 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             StringBuffer response = new StringBuffer();
+            int lines = 0;
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine).append("\r");
+                    lines++;
                 }
                 in.close();
             } catch (FileNotFoundException e) {

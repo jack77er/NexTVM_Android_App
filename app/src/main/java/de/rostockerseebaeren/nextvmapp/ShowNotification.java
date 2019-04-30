@@ -36,16 +36,18 @@ public class ShowNotification extends BroadcastReceiver {
         String text = String.format(context.getString(R.string.notification_event_details), e.mTitle, sfd.format(e.mDate));
         // Build notification
         // Actions are just fake
+        //NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this,0)
         Notification noti = new Notification.Builder(context)
                 .setContentTitle(context.getString(R.string.notification_event_title))
-                .setContentText(text).setSmallIcon(R.mipmap.ic_launcher)
+                .setContentText(text)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pIntent).build();
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // hide the notification after its selected
 
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
+
         v.vibrate(1000);
 
         notificationManager.notify(0, noti);
