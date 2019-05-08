@@ -53,4 +53,7 @@
     <string name="get_latest_posts">Forum</string>
     <string name="error_broken_lastposts">Fehler beim auslesen der Foren-Posts</string>
     <string name="error_response_empty">Fehler: Leere Antwort vom Server</string>
+    <string name="error_not_authorized">Nicht autorisiert!</string>
+    <string name="error_unknown">Unbekannter Fehler</string>
+    <string name="ack_user" translatable="false">" "</string>
 </resources>

@@ -59,4 +59,7 @@
     <string name="get_latest_posts">Latest Posts</string>
     <string name="error_broken_lastposts">Error receiving last board posts</string>
     <string name="error_response_empty">Error: Empty response.</string>
+    <string name="error_not_authorized">Not authorized!</string>
+    <string name="error_unknown">Unknown Error</string>
+    <string name="ack_user" translatable="false">" "</string>
 </resources>

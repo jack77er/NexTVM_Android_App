@@ -17,13 +17,12 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "de.rostockerseebaeren.nextvmapp"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 13
-        versionName "1.2.4"
+        versionName "1.2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,14 +35,14 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    implementation 'com.android.support:appcompat-v7:25.4.0'
-    implementation 'com.android.support:support-compat:25.4.0'
-    implementation 'com.android.support:design:25.4.0'
-    testCompile 'junit:junit:4.12'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+    //androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    //    exclude group: 'com.android.support', module: 'support-annotations'
+    //})
+    implementation 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    implementation 'com.android.support:support-compat:26.0.0-alpha1'
+    implementation 'com.android.support:design:26.0.0-alpha1'
+    //testCompile 'junit:junit:4.12'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.10.0@aar') {
         transitive = true;
     }
 }

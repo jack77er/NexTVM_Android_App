@@ -29,6 +29,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -631,6 +633,8 @@ public class NextvmActivity extends AppCompatActivity
 
                     final LinearLayout llUsers = (LinearLayout) mEventViews.get(i).findViewById(currID).findViewById(R.id.linlayEventUsers);
 
+                    llUsers.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+
                     ToggleButton btnToggle = (ToggleButton) mEventViews.get(i).findViewById(currID).findViewById(R.id.btnExpandUsers);
                     btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -642,9 +646,6 @@ public class NextvmActivity extends AppCompatActivity
                             }
                         }
                     });
-
-
-
 
                     btnComment.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -678,26 +679,80 @@ public class NextvmActivity extends AppCompatActivity
                         }
                     });
 
-
-
-
                     int usersYes = 0, usersNo = 0, usersMaybe = 0, usersYesNACK = 0;
 
                     for(int j = 0 ; j < event.mUsers.size() ; j++) {
-                        EventUser cur = event.mUsers.get(j);
+                        LinearLayout llSingleEventUserEntry = new LinearLayout(llUsers.getContext());
+
+                        llSingleEventUserEntry.setOrientation(LinearLayout.HORIZONTAL);
+                        llSingleEventUserEntry.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_transparent));
+                        llSingleEventUserEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                        final EventUser cur = event.mUsers.get(j);
 
                         TextView tv = new TextView(getApplicationContext());
                         tv.setText(cur.mName);
                         tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_text));
                         tv.setPadding((int)pxFromDp(5f),2,0,2);
-                        llUsers.addView(tv);
+                        tv.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT));
+                        llSingleEventUserEntry.addView(tv);
 
                         TextView txtUserComment = null;
+                        CheckBox user_ack = null;
+
+                        if(mUser.isMara()) {
+                            user_ack = new CheckBox(getApplicationContext());
+                            user_ack.setText(getString(R.string.ack_user));
+                            user_ack.setPadding((int)pxFromDp(5f),2,0,2);
+                            user_ack.setGravity(Gravity.RIGHT);
+
+                            switch (cur.state ) {
+                                case YES_ACK:
+                                    user_ack.setChecked(true);
+                                    user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_green));
+                                    break;
+                                case YES_NOT_ACK:
+                                    user_ack.setChecked(false);
+                                    user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    break;
+                                default:
+                                    user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    user_ack.setChecked(false);
+                                    user_ack.setEnabled(false);
+                                    break;
+                            }
+                            user_ack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    int retVal = 0;
+                                    if(isChecked) {
+                                        //if(cur.state == EventUser.EVENT_USER_STATE.YES_NOT_ACK) {
+                                            // acknowledge user
+                                            new updateEventUserState(cur.mID, mUser.mJoomlaPassword ,event.mID , (int)1, mUser.mID).execute();
+
+                                        //}
+                                    } else {
+                                        //if((cur.state == EventUser.EVENT_USER_STATE.YES_ACK) || (cur.state == EventUser.EVENT_USER_STATE.NO)) {
+                                            // not acknowledge user
+                                            new updateEventUserState(cur.mID, mUser.mJoomlaPassword ,event.mID , (int)0, mUser.mID).execute();
+                                        //}
+                                    }
+                                }
+                            });
+
+                            llSingleEventUserEntry.addView(user_ack);
+                            //TODO user aus event werfen einbauen
+                        }
+
+                        llUsers.addView(llSingleEventUserEntry);
+
                         if(cur.mComment.length() > 0) {
                             txtUserComment = new TextView(getApplicationContext());
                             txtUserComment.setText(cur.mComment);
                             txtUserComment.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_text));
                             txtUserComment.setPadding((int)pxFromDp(10f),2,0,2);
+
 
                             // Read your drawable from somewhere
                             Drawable dr = ContextCompat.getDrawable(getApplicationContext(), R.drawable.arrow_right_transp);
@@ -886,6 +941,153 @@ public class NextvmActivity extends AppCompatActivity
         }
     }
 
+    private class updateEventUserState extends AsyncTask<Integer, Void , Integer> {
+
+        int eventID;
+        int ack;
+        int userID;
+        String pass;
+        int editorID;
+        JSONObject responseObj;
+
+        private ProgressDialog dialog;
+
+        /**
+         *
+         * @param userid    (int)     ID of the current user
+         * @param pass      (String)  JOOMLA password of the current User
+         * @param eventid        (int)     ID of the event
+         * @param ack         (int)     new registration state
+         * @param editorid         (int)     ID od editing user
+         */
+        public updateEventUserState(int userid, String pass, int eventid, int ack, int editorid) {
+            this.userID = userid;
+            this.pass = pass;
+            this.eventID = eventid;
+            this.ack = ack;
+            this.editorID = editorid;
+            dialog = new ProgressDialog(NextvmActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setMessage(getString(R.string.info_get_results_msg));
+            dialog.setIndeterminate(true);
+            if(!dialog.isShowing()){
+                dialog.show();
+            }
+        }
+        /**
+         *
+         * @param params
+         * @return state
+         */
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            HttpsURLConnection client = null;
+            URL url = null;
+            StringBuilder paramStr = new StringBuilder();
+
+            // initiale SSL
+            SSLContext sc = null;
+
+            try {
+                sc = SSLContext.getInstance("TLS");
+                sc.init(null, null, new java.security.SecureRandom());
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                mError = getString(R.string.error_ssl_failed);
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+                mError = getString(R.string.error_ssl_failed);
+            }
+
+
+            try {
+                paramStr.append("event_id="+ URLEncoder.encode(String.valueOf(eventID), "UTF-8"));
+                paramStr.append("&pass="+ URLEncoder.encode(pass,"UTF-8"));
+                paramStr.append("&user_id="+ URLEncoder.encode(String.valueOf(userID),"UTF-8"));
+                paramStr.append("&ack="+ URLEncoder.encode(String.valueOf(ack),"UTF-8"));
+                paramStr.append("&editor_id="+ URLEncoder.encode(String.valueOf(editorID),"UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                url = new URL("https://rostockerseebaeren.de/?option=com_tvm&task=setEventUserAck&format=json");
+                client = (HttpsURLConnection)url.openConnection();
+                client.setConnectTimeout(CONNECTION_TIMEOUT);
+                client.setReadTimeout(CONNECTION_TIMEOUT);
+                client.setSSLSocketFactory(sc.getSocketFactory());
+                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+                client.setRequestProperty("Content-Length", "" + Integer.toString(paramStr.length()));
+                client.setRequestProperty("Content-Language", "en-US");
+
+                client.setUseCaches (false);
+                client.setDoInput(true);
+                client.setDoOutput(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                //paramStr = URLEncoder.encode(paramStr,"UTF-8");
+                DataOutputStream wr = new DataOutputStream(client.getOutputStream());
+                wr.write(paramStr.toString().getBytes("UTF-8"));
+                wr.flush();
+                wr.close();
+
+                int responseCode = client.getResponseCode();
+                System.out.println("\nSending 'POST' request to URL : " + url);
+                System.out.println("Post parameters : " + paramStr);
+                System.out.println("Response Code : " + responseCode);
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            StringBuffer response = new StringBuffer();
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine).append("\r");
+                }
+                in.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException ioe){
+                ioe.printStackTrace();
+            }
+
+            if(response.toString().equals("Access denied\r")){
+                return -3;
+            } else if(response.toString().equals("1\r")){
+                return 1;
+            } else{
+                return -1;
+            }
+        }
+
+        protected void onPostExecute(Integer s) {
+            switch (s) {
+                case 1:// entry successfully updated
+                    break;
+                case -3: // invalid password
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_not_authorized),Toast.LENGTH_LONG).show();
+                    break;
+                default: // invalid input values
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_unknown),Toast.LENGTH_LONG).show();
+                    break;
+            }
+
+            if(dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+    }
+
+
     private class updateEventState extends AsyncTask<Integer, Void , Integer> {
 
         int eventID;
@@ -960,7 +1162,7 @@ public class NextvmActivity extends AppCompatActivity
             }
 
             try {
-                url = new URL("https://rostockerseebaeren.de/?option=com_tvm&task=updateEventRegistrationJSON&format=json");
+                url = new URL("https://rostockerseebaeren.de/?option=com_tvm&task=updateEventRegistration&format=json");
                 client = (HttpsURLConnection)url.openConnection();
                 client.setConnectTimeout(CONNECTION_TIMEOUT);
                 client.setReadTimeout(CONNECTION_TIMEOUT);

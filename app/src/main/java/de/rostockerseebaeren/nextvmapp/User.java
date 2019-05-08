@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     public static int mSeebaerenGoupID = 12;
+    public static int mMaraGoupID = 10;
 
     @Override
     public boolean equals(Object o) {
@@ -21,6 +22,7 @@ public class User implements Serializable {
 
         if (mID != user.mID) return false;
         if (mSeebaer != user.mSeebaer) return false;
+        if (mMara != user.mMara) return false;
         if (mName != null ? !mName.equals(user.mName) : user.mName != null) return false;
         if (mUsername != null ? !mUsername.equals(user.mUsername) : user.mUsername != null)
             return false;
@@ -37,6 +39,7 @@ public class User implements Serializable {
         result = 31 * result + (mEmail != null ? mEmail.hashCode() : 0);
         result = 31 * result + (mJoomlaPassword != null ? mJoomlaPassword.hashCode() : 0);
         result = 31 * result + (mSeebaer ? 1 : 0);
+        result = 31 * result + (mMara ? 1 : 0);
         return result;
     }
 
@@ -47,6 +50,17 @@ public class User implements Serializable {
     public String mJoomlaPassword;
     public boolean mSeebaer;
     public long mLastLogin;
+    public boolean mMara;
+
+    public boolean isMara() {
+        return mMara;
+    }
+
+    public void setMara(boolean mMara) {
+        this.mMara = mMara;
+    }
+
+
 
     public User() {
     }
@@ -68,8 +82,13 @@ public class User implements Serializable {
             groups = jsonRootObject.getJSONObject("groups");
 
             if(groups.optInt(String.valueOf(mSeebaerenGoupID)) == mSeebaerenGoupID) {
-                mSeebaer = true;
+                this.mSeebaer = true;
             }
+
+            if(groups.optInt(String.valueOf(mMaraGoupID)) == mMaraGoupID) {
+                this.mMara = true;
+            }
+
 
         } catch (JSONException e) {e.printStackTrace();}
     }
