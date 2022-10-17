@@ -50,7 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +76,7 @@ import java.util.TimeZone;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 
 public class NextvmActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -109,7 +109,7 @@ public class NextvmActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -509,6 +509,7 @@ public class NextvmActivity extends AppCompatActivity
 
                 // add new views
                 for (int i = 0 ; i < events.size() ; i++) {
+
                     final TvmEvent event = events.get(i);
 
                     ViewGroup vg = (LinearLayout) getLayoutInflater().inflate(R.layout.single_tvm_entry, rootView,true);
@@ -544,7 +545,7 @@ public class NextvmActivity extends AppCompatActivity
                     RadioButton btnMaybe =  (RadioButton)mEventViews.get(i).findViewById(currID).findViewById(R.id.radioButtonMaybe);
 
                     if(event.mClosed) {
-                        rg.setEnabled(false);
+                        rg.setVisibility(View.GONE);
                         btnYes.setEnabled(false);
                         btnNo.setEnabled(false);
                         btnMaybe.setEnabled(false);
@@ -556,6 +557,7 @@ public class NextvmActivity extends AppCompatActivity
                     long eventTimeout = (event.mDate.getTime() +  tz.getRawOffset() + tz.getDSTSavings())/1000 - (event.mDeadline * 60 );
 
                     if(now > eventTimeout) {
+                        rg.setVisibility(View.GONE);
                         btnYes.setEnabled(false);
                         btnNo.setEnabled(false);
                         btnMaybe.setEnabled(false);
@@ -664,7 +666,7 @@ public class NextvmActivity extends AppCompatActivity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     lastSelectedEventView = (LinearLayout) v.getParent().getParent();
-                                    new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID, getUserState(event.mID), input.getText().toString()).execute();
+                                    new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID, mUser.mID,getUserState(event.mID), input.getText().toString()).execute();
 
                                 }
                             });
@@ -700,26 +702,66 @@ public class NextvmActivity extends AppCompatActivity
 
                         TextView txtUserComment = null;
                         CheckBox user_ack = null;
-
+                        Button user_rem = null;
+                        View lblSpacer = null;
                         if(mUser.isMara()) {
+                            LinearLayout.LayoutParams llParamButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                            llParamButton.bottomMargin = 0;
+                            llParamButton.leftMargin = 0;
+                            llParamButton.topMargin = 0;
+                            llParamButton.rightMargin= 0;
+                            llParamButton.gravity = Gravity.CENTER_HORIZONTAL | Gravity.FILL_VERTICAL;
+                            llParamButton.weight = 0;
+                            llParamButton.width = (int)pxFromDp(35);
+
                             user_ack = new CheckBox(getApplicationContext());
                             user_ack.setText(getString(R.string.ack_user));
                             user_ack.setPadding((int)pxFromDp(5f),2,0,2);
-                            user_ack.setGravity(Gravity.RIGHT);
+                            user_ack.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+                            user_ack.setLayoutParams(llParamButton);
+
+                            user_rem = new Button(getApplicationContext());
+                            user_rem.setText(getString(R.string.rem_user));
+                            user_rem.setPadding((int)pxFromDp(5f),2,0,2);
+                            user_rem.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+                            user_rem.setLayoutParams(llParamButton);
+
+                            lblSpacer = new View(getApplicationContext());
+                            lblSpacer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
                             switch (cur.state ) {
                                 case YES_ACK:
                                     user_ack.setChecked(true);
                                     user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_green));
+                                    user_rem.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_green));
+                                    lblSpacer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_green));
                                     break;
                                 case YES_NOT_ACK:
                                     user_ack.setChecked(false);
                                     user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    user_rem.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    lblSpacer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    break;
+                                case MAYBE:
+                                    user_ack.setChecked(false);
+                                    user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_yellow));
+                                    user_rem.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_yellow));
+                                    lblSpacer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_yellow));
+                                    break;
+                                case NO_FORCED:
+                                case NO:
+                                    user_ack.setChecked(false);
+                                    user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_red));
+                                    user_rem.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_red));
+                                    lblSpacer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_red));
                                     break;
                                 default:
                                     user_ack.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
                                     user_ack.setChecked(false);
                                     user_ack.setEnabled(false);
+                                    lblSpacer.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    user_rem.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.tvm_grey));
+                                    user_rem.setEnabled(false);
                                     break;
                             }
                             user_ack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -741,7 +783,36 @@ public class NextvmActivity extends AppCompatActivity
                                 }
                             });
 
+                            user_rem.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(final View v)
+                                {
+                                    new AlertDialog.Builder(NextvmActivity.this)
+                                            .setTitle("")
+                                            .setMessage(getString(R.string.ask_del_user))
+
+                                            // Specifying a listener allows you to take an action before dismissing the dialog.
+                                            // The dialog is automatically dismissed when a dialog button is clicked.
+                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    lastSelectedEventView = (LinearLayout) v.getParent().getParent();
+                                                    new updateEventState( mUser.mID, mUser.mJoomlaPassword, event.mID, cur.mID,(int) 4, cur.mComment).execute();
+                                                }
+                                            })
+
+                                            // A null listener allows the button to dismiss the dialog and take no further action.
+                                            .setNegativeButton(android.R.string.no, null)
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .show();
+                                }
+                            });
+
                             llSingleEventUserEntry.addView(user_ack);
+                            llSingleEventUserEntry.addView(user_rem);
+                            llSingleEventUserEntry.addView(lblSpacer);
+
+
                             //TODO user aus event werfen einbauen
                         }
 
@@ -818,15 +889,15 @@ public class NextvmActivity extends AppCompatActivity
                                     case R.id.radioButtonYes:
 
                                         lastSelectedEventView = (LinearLayout)buttonView.getParent().getParent();
-                                        new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID, 1, "").execute();
+                                        new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID,mUser.mID,  1, "").execute();
                                         break;
                                     case R.id.radioButtonNo:
                                         lastSelectedEventView = (LinearLayout)buttonView.getParent().getParent();
-                                        new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID, 3, "").execute();
+                                        new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID,mUser.mID,  3, "").execute();
                                         break;
                                     case R.id.radioButtonMaybe:
                                         lastSelectedEventView = (LinearLayout)buttonView.getParent().getParent();
-                                        new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID, 2, "").execute();
+                                        new updateEventState(mUser.mID, mUser.mJoomlaPassword, event.mID, mUser.mID,2, "").execute();
                                         break;
                                     default:
                                         break;
@@ -1093,6 +1164,7 @@ public class NextvmActivity extends AppCompatActivity
         int eventID;
         int state;
         int userID;
+        int eventUserID;
         String pass;
         String comment;
         JSONObject responseObj;
@@ -1103,14 +1175,16 @@ public class NextvmActivity extends AppCompatActivity
          *
          * @param userid    (int)     ID of the current user
          * @param pass      (String)  JOOMLA password of the current User
-         * @param id        (int)     ID of the event
+         * @param uid (int)  ID to the user to be modified
+         * @param eid        (int)     ID of the event
          * @param s         (int)     new registration state
          * @param c         (String)  new comment of this entry
          */
-        public updateEventState(int userid, String pass, int id, int s, String c) {
+        public updateEventState(int userid, String pass, int eid, int uid,  int s, String c) {
             this.userID = userid;
             this.pass = pass;
-            this.eventID = id;
+            this.eventUserID = uid;
+            this.eventID = eid;
             this.state = s;
             this.comment = c;
 
@@ -1154,6 +1228,7 @@ public class NextvmActivity extends AppCompatActivity
             try {
                 paramStr.append("id="+ URLEncoder.encode(String.valueOf(userID), "UTF-8"));
                 paramStr.append("&pass="+ URLEncoder.encode(pass,"UTF-8"));
+                paramStr.append("&userid="+ URLEncoder.encode(String.valueOf(eventUserID),"UTF-8"));
                 paramStr.append("&event="+ URLEncoder.encode(String.valueOf(eventID),"UTF-8"));
                 paramStr.append("&state="+ URLEncoder.encode(String.valueOf(state),"UTF-8"));
                 paramStr.append("&comment="+ URLEncoder.encode(comment,"UTF-8"));
@@ -1162,7 +1237,7 @@ public class NextvmActivity extends AppCompatActivity
             }
 
             try {
-                url = new URL("https://rostockerseebaeren.de/?option=com_tvm&task=updateEventRegistration&format=json");
+                url = new URL("https://rostockerseebaeren.de/?option=com_tvm&task=updateEventRegistrationJSON&format=json");
                 client = (HttpsURLConnection)url.openConnection();
                 client.setConnectTimeout(CONNECTION_TIMEOUT);
                 client.setReadTimeout(CONNECTION_TIMEOUT);
@@ -1226,15 +1301,12 @@ public class NextvmActivity extends AppCompatActivity
         protected void onPostExecute(Integer s) {
             // DEBUG ONLY:
             if(responseObj == null) {
-                Crashlytics.setString("JSON Response", "null");
-                Crashlytics.log("empty response from server");
-                Toast msg = new Toast(getApplicationContext());
-                msg.setText(R.string.error_response_empty);
-                msg.setDuration(Toast.LENGTH_LONG);
-                msg.show();
+                //Crashlytics.setString("JSON Response", "null");
+                //Crashlytics.log("empty response from server");
+                Toast.makeText(getApplicationContext(), getString(R.string.error_response_empty),Toast.LENGTH_LONG).show();
                 return;
             }
-            Crashlytics.setString("JSON Response", responseObj.toString());
+            //Crashlytics.setString("JSON Response", responseObj.toString());
             // END DEBUG
             // hier anzeige aktualisieren
             Button btnComment = (Button) lastSelectedEventView.findViewById(R.id.btnSetComment);
@@ -1339,19 +1411,17 @@ public class NextvmActivity extends AppCompatActivity
                     break;
                 case -1: // event closed
                     lastSelectedEventView.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.border_red));
-                    lastSelectedEventView.findViewById(R.id.rgChoice).setEnabled(false);
+                    if(lastSelectedEventView.findViewById(R.id.rgChoice) != null) {
+                        lastSelectedEventView.findViewById(R.id.rgChoice).setVisibility(View.GONE);
+                    } else {
+                        ((LinearLayout)lastSelectedEventView.getParent()).findViewById(R.id.rgChoice).setVisibility(View.GONE);
+                    }
                     break;
                 case -2: // event not available
-                    Toast msg = new Toast(getApplicationContext());
-                    msg.setText(R.string.error_event_not_found);
-                    msg.setDuration(Toast.LENGTH_LONG);
-                    msg.show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.error_event_not_found),Toast.LENGTH_LONG);
                     break;
                 case -3: // invalid input values
-                    Toast msg2 = new Toast(getApplicationContext());
-                    msg2.setText(R.string.error_event_invalid_input);
-                    msg2.setDuration(Toast.LENGTH_LONG);
-                    msg2.show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.error_event_invalid_input),Toast.LENGTH_LONG);
                     break;
             }
 

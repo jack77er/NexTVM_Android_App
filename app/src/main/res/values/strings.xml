@@ -62,4 +62,7 @@
     <string name="error_not_authorized">Not authorized!</string>
     <string name="error_unknown">Unknown Error</string>
     <string name="ack_user" translatable="false">" "</string>
+    <string name="rem_user" translatable="false">"X"</string>
+    <string name="ask_del_user">"Remove user from event?"</string>
+    <string name="acknowledge">Acknowledge</string>
 </resources>

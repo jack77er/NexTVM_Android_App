@@ -60,39 +60,42 @@
             android:visibility="gone" />
 
         <RadioGroup
+            android:id="@+id/rgChoice"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:id="@+id/rgChoice"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:visibility="visible">
 
             <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tvm_yes"
                 android:id="@+id/radioButtonYes"
-                android:textColor="@color/tvm_text"
-                android:buttonTint="@color/tvm_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tvm_no"
+                android:buttonTint="@color/tvm_text"
+                android:fadeScrollbars="true"
+                android:text="@string/tvm_yes"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/tvm_text" />
+
+            <RadioButton
                 android:id="@+id/radioButtonNo"
-                android:textColor="@color/tvm_text"
-                android:buttonTint="@color/tvm_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tvm_maybe"
-                android:id="@+id/radioButtonMaybe"
-                android:textColor="@color/tvm_text"
                 android:buttonTint="@color/tvm_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="@string/tvm_no"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/tvm_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonMaybe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/tvm_text"
+                android:text="@string/tvm_maybe"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/tvm_text" />
 
         </RadioGroup>
 

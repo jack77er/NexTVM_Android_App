@@ -56,4 +56,6 @@
     <string name="error_not_authorized">Nicht autorisiert!</string>
     <string name="error_unknown">Unbekannter Fehler</string>
     <string name="ack_user" translatable="false">" "</string>
+    <string name="ask_del_user">Teilnehmer entfernen?</string>
+    <string name="acknowledge">Bestätigung</string>
 </resources>
